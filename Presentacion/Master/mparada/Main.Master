@@ -1,0 +1,474 @@
+﻿<%@ master language="vb" autoeventwireup="false" codebehind="Main.master.vb" inherits="Presentacion.Main" %>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+
+    <title>Foco en Obra | Escritorio de Proyectos</title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no" />
+
+    <link rel="stylesheet" href="../CSS/w3.css" />
+    <link rel="stylesheet" href="../CSS/w3-theme-black.css" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script type="text/javascript" src="https://code.highcharts.com/stock/highstock.js"></script>
+    <script type="text/javascript" src="../w3.js"></script>
+
+
+
+
+
+    <style type="text/css">
+        
+        .sidenav {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            background-color: #f0f0f0;
+            overflow-x: hidden;
+            transition: 0.3s;
+            padding-top: 30px;
+        }
+
+
+            .sidenav a:hover, .offcanvas a:focus {
+                color: #17649a;
+            }
+
+            .sidenav .close_btn {
+                position: absolute;
+                top: 0px;
+                right: 3px !important;
+                font-size: 25px;
+                font-weight:800;
+                padding-top: 25px;
+                color:black;
+            }
+
+            .sidenav a {
+                text-decoration: none;
+                font-size: 12px;
+                display: block;
+                transition: 0.3s;
+                padding: 8px;
+                margin-left: 0px;
+                padding-left: 20px;
+                font-weight: 400;
+                color: #333;
+                cursor:pointer;
+            }
+
+            .w3-image{margin-bottom:10px !important}
+
+        .divbutton {
+            height: 100px;
+            background: #0000ff;
+        }
+        /* Center the loader */
+        #loader {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            z-index: 1;
+            width: 80px;
+            height: 80px;
+            margin: 0px 0 0 -15px;
+            border: 16px solid #40b3df;
+            border-radius: 50%;
+            border-top: 16px solid #17649a;
+            width: 30px;
+            height: 30px;
+            -webkit-animation: spin 2s linear infinite;
+            animation: spin 1s linear infinite;
+        }
+
+        @-webkit-keyframes spin {
+            0% {
+                -webkit-transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Add animation to "page content" */
+        .animate-bottom {
+            position: relative;
+            -webkit-animation-name: animatebottom;
+            -webkit-animation-duration: 1s;
+            animation-name: animatebottom;
+            animation-duration: 1s
+        }
+
+        @-webkit-keyframes animatebottom {
+            from {
+                bottom: -100px;
+                opacity: 0
+            }
+
+            to {
+                bottom: 0px;
+                opacity: 1
+            }
+        }
+
+        @keyframes animatebottom {
+            from {
+                bottom: -100px;
+                opacity: 0
+            }
+
+            to {
+                bottom: 0;
+                opacity: 1
+            }
+        }
+
+        #myDiv {
+            display: none;
+            text-align: center;
+        }
+
+        /* End Loader */
+
+        html, body, h1, h2, h3, h4, h5, h6 {
+            font-family: "Century Gothic", sans-serif;
+        }
+
+        body {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .w3-table td, .w3-table th, .w3-table-all td, .w3-table-all th {
+            padding: 2px 8px;
+        }
+
+        hr {
+            box-sizing: content-box;
+            height: 0px;
+            overflow: visible
+        }
+
+        /*.w3-sidenav a, .w3-sidenav h4 {padding: 12px;font-weight:Normal;font-size: 16px; transition: 0.5s; display:block }*/
+
+        .w3-navbar li a {
+            padding-top: 12px;
+            padding-bottom: 12px;
+        }
+
+        #curve_chart1 {
+            height: 300px;
+            min-width: 250px;
+            max-width: 500px;
+        }
+
+        #curve_chart2 {
+            height: 300px;
+            min-width: 250px;
+            max-width: 500px;
+        }
+
+        #curve_chart3 {
+            height: 300px;
+            min-width: 250px;
+            max-width: 500px;
+        }
+    </style>
+
+    <script type="text/javascript">
+
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "220px";
+            document.getElementById("main").style.marginLeft = "220px";
+
+        }
+
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+            document.getElementById("main").style.marginLeft = "0";
+
+        }
+
+    </script>
+
+    <script type="text/javascript">
+        var myVar;
+
+        function loaderFunc() {
+            myVar = setTimeout(showPage, 1000);
+        }
+
+        function showPage() {
+            document.getElementById("loader").style.display = "none";
+            document.getElementById("main").style.display = "block";
+        }
+    </script>
+
+    <script>
+        function myAccFunc() {
+            var x = document.getElementById("demoAcc");
+            if (x.className.indexOf("w3-show") == -1) {
+                x.className += " w3-show w3-animate-left";
+                x.previousElementSibling.className += " w3-teal";
+                indica.className += "fa fa-caret-up";
+            } else {
+                x.className = x.className.replace(" w3-show", "");
+                x.previousElementSibling.className =
+                x.previousElementSibling.className.replace(" w3-teal", "");
+                indica.className += "fa fa-caret-down";
+
+            }
+        }
+
+        function myDropFunc() {
+            var x = document.getElementById("demoDrop");
+            if (x.className.indexOf("w3-show") == -1) {
+                x.className += " w3-show";
+                x.previousElementSibling.className += " w3-teal";
+                indica.className += "fa fa-caret-up";
+            } else {
+                x.className = x.className.replace(" w3-show", "");
+                x.previousElementSibling.className =
+                    x.previousElementSibling.className.replace(" w3-teal", "");
+                indica.className += "fa fa-caret-down";
+            }
+        }
+
+        function myAccFunc2() {
+            var x = document.getElementById("demoAcc2");
+            if (x.className.indexOf("w3-show ") == -1) {
+                x.className += " w3-show  w3-animate-left";
+                x.previousElementSibling.className += " w3-teal";
+                indica2.className += "fa fa-caret-up";
+            } else {
+                x.className = x.className.replace(" w3-show", "");
+                x.previousElementSibling.className =
+                    x.previousElementSibling.className.replace(" w3-teal", "");
+                indica2.className += "fa fa-caret-down";
+            }
+        }
+
+        function myDropFunc2() {
+            var x = document.getElementById("demoDrop2");
+            if (x.className.indexOf("w3-show") == -1) {
+                x.className += " w3-show";
+                x.previousElementSibling.className += " w3-teal";
+                indica2.className += "fa fa-caret-up";
+            } else {
+                x.className = x.className.replace(" w3-show", "");
+                x.previousElementSibling.className =
+                    x.previousElementSibling.className.replace(" w3-teal", "");
+                indica2.className += "fa fa-caret-down";
+            }
+        }
+
+        function myAccFunc3() {
+            var x = document.getElementById("demoAcc3");
+            if (x.className.indexOf("w3-show") == -1) {
+                x.className += " w3-show  w3-animate-left";
+                x.previousElementSibling.className += " w3-teal";
+                indica3.className += "fa fa-caret-up";
+            } else {
+                x.className = x.className.replace(" w3-show", "");
+                x.previousElementSibling.className =
+                    x.previousElementSibling.className.replace(" w3-teal", "");
+                indica3.className += "fa fa-caret-down";
+            }
+        }
+
+        function myDropFunc3() {
+            var x = document.getElementById("demoDrop3");
+            if (x.className.indexOf("w3-show") == -1) {
+                x.className += " w3-show";
+                x.previousElementSibling.className += " w3-teal";
+                indica3.className += "fa fa-caret-up";
+            } else {
+                x.className = x.className.replace(" w3-show", "");
+                x.previousElementSibling.className =
+                    x.previousElementSibling.className.replace(" w3-teal", "");
+                indica3.className += "fa fa-caret-down";
+            }
+        }
+    </script>
+
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+
+
+
+<body onload="loaderFunc()" style="margin: 0">
+    <div id="loader"></div>
+    <form id="form1" runat="server">
+        <%--<asp:ScriptManager runat="server" ID="ScriptManager1" 
+        AsyncPostBackTimeout="420"></asp:ScriptManager>--%>
+        <!-- Modal de listado de proyectos-->
+
+        <div id="modalProyectos" class="w3-modal w3-card-4" style="z-index: 5">
+            <div class="w3-modal-content w3-animate-top">
+                <div class="w3-container w3-padding w3-theme-l3">
+                    <span onclick="document.getElementById('modalProyectos').style.display='none'" class="w3-right w3-xlarge w3-closebtn"><i class="fa fa-remove"></i></span>
+                    <div class="w3-center">
+                        <h4>Seleccione un Proyecto</h4>
+                    </div>
+
+                    <ul class="w3-ul w3-hoverable w3-hover-white" style="cursor: pointer">
+                        <asp:repeater id="rpt1" runat="server">
+                            <ItemTemplate>
+                                <li id="li-<%# DataBinder.Eval(Container.DataItem, "Id_Obr") %>" onclick="click_obra(this)">
+                                    <%--<li id="li_obr" runat="server" onclick="click_obra(this)">--%>
+                                    <%# DataBinder.Eval(Container.DataItem, "Nombre_Obr")%> 
+                                </li>
+                            </ItemTemplate>
+                        </asp:repeater>
+                    </ul>
+                    <%-- <ul class="w3-pagination w3-right">
+
+                        <li><a href="#" class="w3-hover-blue">&#10094;</a></li>
+                        <li><a href="#" class="w3-hover-blue">1</a></li>
+                        <li><a href="#" class="w3-hover-blue">2</a></li>
+                        <li><a href="#" class="w3-hover-blue">3</a></li>
+                        <li><a href="#" class="w3-hover-blue">4</a></li>
+                        <li><a href="#">&#10095;</a></li>
+                    </ul>--%>
+                </div>
+            </div>
+        </div>
+
+        <!--barra de navegación-->
+
+        <div class="w3-top" style="z-index: 4">
+
+
+            <div class="w3-bar w3-hide-large w3-hide-medium w3-padding-large w3-center">
+                <a class="w3-bar-item w3-hover-white w3-large w3-theme-l9 w3-padding-large" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
+                <a class="w3-bar-item w3-hover-white w3-large w3-theme-l9 w3-padding-large" href="#" onclick="document.getElementById('modalProyectos').style.display='block'"><i class="fa fa-cog fa-spin"></i></a>
+                <a class="w3-bar-item w3-hover-white w3-large w3-theme-l9 w3-padding-large" href="#"><i class="fa fa-sign-out"></i></a>
+            </div>
+            <ul class="w3-navbar w3-theme-l1 w3-left-align">
+
+
+
+                <li class="w3-opennav">
+                    <a class="w3-hide-small w3-padding-large w3-hover-white w3-large" href="javascript:void(0);" onclick="openNav()" style="background-color: #00987f"><i class="fa fa-bars"></i> MENU</a>
+                </li>
+                <!--iconos panel superior-->
+
+                <li>
+                    <a class="w3-hide-small w3-padding-large w3-hover-white" onclick="document.getElementById('modalProyectos').style.display='block'" style="cursor: pointer; background-color: #00987f"><i class="fa fa-cog fa-spin"></i> PROYECTOS</a>
+
+                </li>
+
+
+
+                <li class="w3-hide-small w3-dropdown-hover ">
+                    <a href="#" class="w3-padding-large w3-hover-white w3-show-inline-block" title="Alertas"><i class="fa fa-bell"></i><span class="w3-badge w3-right w3-small" style="background-color: #00987f">0</span></a>
+                    <%--<div class="w3-dropdown-content w3-white w3-card-4 ">
+                        <a href="#">Resultado Actual bajo el 20% | 12-12-17</a>
+                        <a href="#">Desviación PAS en -18 días | 12-12-17</a>
+                        <a href="#">Ver Todas las Alertas</a>
+
+                    </div>--%>
+                </li>
+
+                <li class="w3-hide-small w3-dropdown-hover ">
+                    <a href="#" class="w3-padding-large w3-hover-white w3-show-inline-block" title="Mensajes"><i class="fa fa-envelope"></i><span class="w3-badge w3-right w3-small" style="background-color: #00987f">0</span></a>
+                    <%--    <div class="w3-dropdown-content w3-white w3-card-4">
+                        <a href="#">De: Juan Perez-Cotapo | 12-12-17</a>
+                        <a href="#">Ver Todos los Mensajes</a>
+
+                    </div>--%>
+                </li>
+                <li class="w3-hide-small w3-dropdown-hover ">
+                    <a href="#" class="w3-padding-large w3-hover-white w3-show-inline-block" title="Pendientes"><i class="fa fa-cog"></i><span class="w3-badge w3-right w3-small" style="background-color: #00987f">0</span></a>
+                    <%-- <div class="w3-dropdown-content w3-white w3-card-4">
+                        <a href="#">Categoría 1 | 12-12-17</a>
+                        <a href="#">Categoría 2 | 12-12-17</a>
+                        <a href="#">Categoría 3 | 12-12-17</a>
+                        <a href="#">Ver Todos los Pendientes</a>
+                    </div>--%>
+                </li>
+                <%--                <li class="w3-hide-small w3-right w3-theme-l9"><a id="lnk_exit" runat="server" class="w3-padding-large w3-hover-white" title="Presione para cerrar su sesión"><i class="fa fa-sign-out"></i> SALIR</a></li>--%>
+
+
+                <li class="w3-theme-l9 w3-hide-small w3-right"><a id="lnk_exit" runat="server" href="#" class="w3-padding-large w3-hover-white" title="Presione para cerrar su sesión" style="background-color: #00987f"><i class="fa fa-sign-out"></i> SALIR</a></li>
+
+            </ul>
+
+
+
+
+
+        </div>
+
+        <%--<nav class="w3-sidenav w3-collapse w3-white w3-animate-left w3-card-2" style="z-index:3;width:260px;" id="mySidenav">--%>
+        <div class="sidenav w3-theme-s1" id="mySidenav">
+
+
+            <a href="javascript:void(0)" class="close_btn" onclick="closeNav()">&#60;</a>
+
+            <%--<img src="../Imagenes/fl6.png" alt="Lights" class="w3-image w3-margin-left" style="width:60%">--%>
+            <img src="../Imagenes/logo_mini.png" alt="Lights" class="w3-image" style="width: 60%; margin-left: 8px">
+           <%-- <a id="lnk_CM" runat="server" href="#"><i class="fa fa-window-restore"></i> Proyectos</a>--%>
+            <%--<a href="#"><i class="fa fa-area-chart"></i>Balance</a>
+            <a href="#"><i class="fa fa-asterisk"></i>Planificación</a>
+            <a href="#"><i class="fa fa-archive"></i>Proyecciones</a>
+            <a href="#"><i class="fa fa-calculator"></i>Movimientos</a>--%>
+            <a id="lnk_CM" runat="server" href="http://localhost:55746/foco/[PROPUESTA]CuadroMando1.aspx" class="w3-bar-item w3-button w3-hover-white"><i class="fa fa-line-chart"></i> Cuadro Mando</a>
+
+            <a onclick="myAccFunc()" class="w3-bar-item w3-button w3-hover-teal"><i class="fa fa-tachometer "></i> <b> Avances</b> <i id="indica" class="fa fa-caret-down"></i></a>
+            <div id="demoAcc" class="w3-hide w3-white">
+                <a href="#" class="w3-bar-item w3-button">Configuración</a>
+                <a href="#" class="w3-bar-item w3-button">Toma Avance</a>
+                <a href="#" class="w3-bar-item w3-button">Consulta Avance</a>
+            </div>
+                        <a onclick="myAccFunc2()" class="w3-bar-item w3-button w3-hover-teal"><i class="fa fa-gear"></i> <b> Productividad</b> <i id="indica2" class="fa fa-caret-down"></i></a>
+
+             <div id="demoAcc2" class="w3-hide w3-white">
+                <a href="#" class="w3-bar-item w3-button">Configuración</a>
+                <a href="#" class="w3-bar-item w3-button">Fichas</a>
+                <a href="#" class="w3-bar-item w3-button">Asistencia</a>
+                <a href="#" class="w3-bar-item w3-button">Cargar Libro</a>
+                <a href="#" class="w3-bar-item w3-button">Asignar MO</a>
+                  <a onclick="myAccFunc3()" class="w3-bar-item w3-button w3-theme-l1"><i class="fa fa-newspaper-o"></i> <b> Reportes</b> <i id="indica3" class="fa fa-caret-down"></i></a>
+
+             <div id="demoAcc3" class="w3-hide" style="background-color:#00B4CC">
+                <a href="#" class="w3-bar-item w3-button w3-text-white">Listado Asignación MO</a>
+                <a href="#" class="w3-bar-item w3-button w3-text-white">Resumen Asignación</a>
+                <a href="#" class="w3-bar-item w3-button w3-text-white">Productividad</a>
+
+            </div>
+            </div>
+
+            
+        </div>
+
+        <div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor: pointer" title="close side menu" id="myOverlay"></div>
+
+        <!--<div id="loader"></div>-->
+
+        <asp:contentplaceholder id="body" runat="server">
+        </asp:contentplaceholder>
+    </form>
+</body>
+</html>
